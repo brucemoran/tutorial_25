@@ -56,30 +56,32 @@ workflow {
 }
 
 //process to get data
-process get_fq {
+process get_fq {  
+  publishDir 'data/fastq/', mode: 'copy', overwrite: false
   
   output:
-  path 'tmp/folder/*.fq'
+  path 'split/*.fq'
 
   script:
   """
-  gdown ${params.gdPath} -O tmp/folder --folder
+  gdown ${params.gdPath} -O split --folder
   """
 }
 
 //Get the fastq bits, and operate on them
 process set_fq {
+    publishDir 'data/fastq/', mode: 'copy', overwrite: false
 
     input:
     path fqs
     
     output:
-    path("${fastq_gz}")
+    path "${fastq_gz}"
 
     script:
     def fastq_gz = params.outDir + "/" + params.runID + ".fastq.gz"
     """
-    cat * >> 'fastq.fq'
+    cat split/* >> 'fastq.fq'
     gzip fastq.fq > ${fastq_gz}
     """
 }

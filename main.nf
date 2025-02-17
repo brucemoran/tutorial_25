@@ -22,6 +22,10 @@ def helpMessage() {
     --email         [str]       Email address to send reports
 
     --outDir        [str]       Output directory (top level)
+
+  Optional:
+
+    --help          [str]       Display help
     """.stripIndent()
 }
 
@@ -37,9 +41,7 @@ if(params.email == null){
 }
 
 if(params.outDir == null){
-  exit 1, "Please specify --email"
-} else {
-  params.outputDir = params.outDir 
+  exit 1, "Please specify --outDir"
 }
 
 //Get the fastq bits, and operate on them
@@ -52,10 +54,10 @@ process get_set_fq {
     file("*.fastq.gz")
 
     script:
-    def fastq_gz = params.runID + ".fastq.gz"
+    def fastq_gz = params.outDir + "/" + params.runID + ".fastq.gz"
     """
     cat * >> 'fastq.fq'
-    gzip fastq.fq > ${fastq.gz}
+    gzip fastq.fq > ${params.outDir${fastq.gz}
     """
 }
 

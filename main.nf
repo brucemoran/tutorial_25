@@ -74,13 +74,13 @@ process set_fq {
     path fqs
     
     output:
-    path("${fastq.gz}")
+    path("${fastq_gz}")
 
     script:
     def fastq_gz = params.outDir + "/" + params.runID + ".fastq.gz"
     """
     cat * >> 'fastq.fq'
-    gzip fastq.fq > ${fastq.gz}
+    gzip fastq.fq > ${fastq_gz}
     """
 }
 

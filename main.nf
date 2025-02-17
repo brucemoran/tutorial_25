@@ -20,6 +20,8 @@ def helpMessage() {
     --gdPath        [str]       Path to Google Drive files (all files therein taken!)
 
     --email         [str]       Email address to send reports
+
+    --outDir        [str]       Output directory (top level)
     """.stripIndent()
 }
 
@@ -34,18 +36,24 @@ if(params.email == null){
   exit 1, "Please specify --email"
 }
 
+if(params.outDir == null){
+  exit 1, "Please specify --email"
+} else {
+  params.outputDir = params.outDir 
+}
+
 //file input channel
-Channel.fromPath("$params.gdPath", type: 'file')
-       .set { fastq_file }
+workflow {
+  def fq_bits = Channel.fromPath('params.gdPath/*.fq').collect()
+  get_set_fq(fq_bits)
+}
 
 //Get the fastq bits, and operate on them
-process Fastq {
-
-  publishDir "${params.outDir}/fastq", mode: "copy"
+process get_set_fq {
 
     input:
-    file(fastq_file).collect()
-
+    path 'fq'
+    
     output:
     file("*.fastq.gz") into ( finished )
 
@@ -57,7 +65,7 @@ process Fastq {
     """
 }
 
-workflow.onComplete {
+workflow.onComplete = {
     sleep(100)
     def subject = """\
         [brucemoran/tutorial_25] SUCCESS [$workflow.runName]

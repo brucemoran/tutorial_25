@@ -49,7 +49,7 @@ process get_set_fq {
     path 'fq'
     
     output:
-    file("*.fastq.gz") into ( finished )
+    file("*.fastq.gz")
 
     script:
     def fastq_gz = params.runID + ".fastq.gz"

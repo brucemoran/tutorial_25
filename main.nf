@@ -79,7 +79,7 @@ process set_fq {
     path "${fastq_gz}"
 
     script:
-    def fastq_gz = params.outDir + "/" + params.runID + ".fastq.gz"
+    def fastq_gz = params.runID + ".fastq.gz"
     """
     cat split/* >> 'fastq.fq'
     gzip fastq.fq > ${fastq_gz}

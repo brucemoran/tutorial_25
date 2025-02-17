@@ -52,12 +52,12 @@ if(params.outDir == null){
 //whole workflow
 workflow {
   get_fq()
-  set_fq(get_fq)
+  set_fq(get_fq.out.collect())
 }
 process get_fq {
   
   output:
-  path
+  path '*.fq'
 
   script:
   """
@@ -69,10 +69,10 @@ process get_fq {
 process set_fq {
 
     input:
-    path fqs.collect()
+    path fqs
     
     output:
-    file("*.fastq.gz")
+    path("${fastq.gz}")
 
     script:
     def fastq_gz = params.outDir + "/" + params.runID + ".fastq.gz"

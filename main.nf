@@ -57,10 +57,10 @@ workflow {
 
 //process to get data
 process get_fq {  
-  publishDir 'data/fastq/', mode: 'copy', overwrite: false
+  publishDir 'data/fastq/split', mode: 'copy', overwrite: false
   
   output:
-  path 'split'
+  path 'split/*.fq'
 
   script:
   """
@@ -81,7 +81,7 @@ process set_fq {
     script:
     def fastq_gz = params.runID + ".fastq.gz"
     """
-    cat split/* >> 'fastq.fq'
+    cat *.fq >> 'fastq.fq'
     gzip fastq.fq > ${fastq_gz}
     """
 }

@@ -60,7 +60,7 @@ process get_fq {
   publishDir 'data/fastq/', mode: 'copy', overwrite: false
   
   output:
-  path 'split/*.fq'
+  path 'split'
 
   script:
   """

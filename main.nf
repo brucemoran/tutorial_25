@@ -54,14 +54,16 @@ workflow {
   get_fq()
   set_fq(get_fq.out.collect())
 }
+
+//process to get data
 process get_fq {
   
   output:
-  path '*.fq'
+  path 'tmp/folder/*.fq'
 
   script:
   """
-  ${params.gdPath}/*fq
+  gdown ${params.gdPath} -O tmp/folder --folder
   """
 }
 

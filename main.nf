@@ -57,7 +57,7 @@ workflow {
 process get_fq {
   
   output:
-  path fqs
+  path
 
   script:
   """

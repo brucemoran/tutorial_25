@@ -42,12 +42,6 @@ if(params.outDir == null){
   params.outputDir = params.outDir 
 }
 
-//file input channel
-workflow {
-  def fq_bits = Channel.fromPath('params.gdPath/*.fq').collect()
-  get_set_fq(fq_bits)
-}
-
 //Get the fastq bits, and operate on them
 process get_set_fq {
 
@@ -65,6 +59,14 @@ process get_set_fq {
     """
 }
 
+
+//whole workflow
+workflow {
+  def fq_bits = Channel.fromPath('params.gdPath/*.fq').collect()
+  get_set_fq(fq_bits)
+}
+
+//when completed...
 workflow.onComplete = {
     sleep(100)
     def subject = """\

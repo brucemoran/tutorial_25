@@ -53,6 +53,7 @@ if(params.outDir == null){
 workflow {
   get_fq()
   set_fq(get_fq.out.collect())
+  fin_fq(set_fq.out)
 }
 
 //process to get data
@@ -75,10 +76,24 @@ process set_fq {
     input:
     path fqs
     
+    output:
+    path "${fastq_gz}"
+
     script:
     def fastq_gz = params.runID + ".fastq.gz"
     """
     cat *.fq | gzip > ${fastq_gz}
+    """
+}
+
+process fin_fq {
+
+    input:
+    path fqs
+
+    script:
+    """
+    echo "Workflow complete"
     """
 }
 

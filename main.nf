@@ -36,6 +36,10 @@ if(params.runID == null){
   exit 1, "Please specify --runID"
 }
 
+if(params.gdPath == null){
+  exit 1, "Please specify --gdPath, path of Google Drive dir in which are fastq files"
+}
+
 if(params.email == null){
   exit 1, "Please specify --email"
 }
@@ -44,11 +48,17 @@ if(params.outDir == null){
   exit 1, "Please specify --outDir"
 }
 
+//whole workflow
+workflow {
+  def fq_bits = Channel.fromPath('params.gdPath/*.fq').collect()
+  get_set_fq(fq_bits)
+}
+
 //Get the fastq bits, and operate on them
 process get_set_fq {
 
     input:
-    path 'fq'
+    path fqs
     
     output:
     file("*.fastq.gz")
@@ -57,15 +67,8 @@ process get_set_fq {
     def fastq_gz = params.outDir + "/" + params.runID + ".fastq.gz"
     """
     cat * >> 'fastq.fq'
-    gzip fastq.fq > ${params.outDir${fastq.gz}
+    gzip fastq.fq > ${fastq.gz}
     """
-}
-
-
-//whole workflow
-workflow {
-  def fq_bits = Channel.fromPath('params.gdPath/*.fq').collect()
-  get_set_fq(fq_bits)
 }
 
 //when completed...

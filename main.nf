@@ -81,8 +81,7 @@ process set_fq {
     script:
     def fastq_gz = params.runID + ".fastq.gz"
     """
-    cat *.fq >> 'fastq.fq'
-    gzip fastq.fq > ${fastq_gz}
+    cat *.fq | gzip > ${fastq_gz}
     """
 }
 

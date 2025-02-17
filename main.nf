@@ -98,7 +98,7 @@ process fin_fq {
 }
 
 //when completed...
-workflow.onComplete = {
+workflow.onComplete {
     sleep(100)
     def subject = """\
         [brucemoran/tutorial_25] SUCCESS [$workflow.runName]

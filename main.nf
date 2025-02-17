@@ -75,9 +75,6 @@ process set_fq {
     input:
     path fqs
     
-    output:
-    path '${fastq_gz}'
-
     script:
     def fastq_gz = params.runID + ".fastq.gz"
     """

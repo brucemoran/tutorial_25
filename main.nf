@@ -51,15 +51,25 @@ if(params.outDir == null){
 
 //whole workflow
 workflow {
-  def fq_bits = Channel.fromPath('params.gdPath/*.fq').collect()
-  get_set_fq(fq_bits)
+  get_fq()
+  set_fq(get_fq)
+}
+process get_fq {
+  
+  output:
+  path fqs
+
+  script:
+  """
+  ${params.gdPath}/*fq
+  """
 }
 
 //Get the fastq bits, and operate on them
-process get_set_fq {
+process set_fq {
 
     input:
-    path fqs
+    path fqs.collect()
     
     output:
     file("*.fastq.gz")
